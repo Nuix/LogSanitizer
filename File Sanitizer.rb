@@ -2,7 +2,7 @@ require "csv"
 require "java"
 require 'pathname'
 require 'rubygems'
-require 'zip'
+#require 'zip'
 require 'find'
 
 java_import javax.swing.JOptionPane
@@ -81,7 +81,11 @@ if regex_csv_file.nil? || !regex_csv_file.exists?
 	exit 1
 end
 
-regex_csv_data = CSV.read(regex_csv_file.to_s,  encoding: "bom|utf-8", headers: :first_row)
+begin
+	regex_csv_data = CSV.read(regex_csv_file.to_s,  encoding: "bom|utf-8", headers: :first_row)
+rescue
+	regex_csv_data = CSV.read(regex_csv_file.to_s,  encoding: "utf-8", headers: :first_row)
+end
 
 log_directory = prompt_directory("C:\\","Choose Log Directory")
 if log_directory.nil? || !log_directory.exists?
